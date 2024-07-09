@@ -45,32 +45,23 @@ describe("Ajouter un produit dans le panier", () => {
         expect(addToCartResponse.status).to.eq(200);
         // Vérifier le schéma de la réponse
         expect(addToCartResponse.body)
-          .to.have.property("id")
-          .that.is.a("number");
+          .to.have.property("id").that.is.a("number");
         expect(addToCartResponse.body)
-          .to.have.property("firstname")
-          .that.is.a("string");
+          .to.have.property("firstname").that.is.a("string");
         expect(addToCartResponse.body)
-          .to.have.property("lastname")
-          .that.is.a("string");
+          .to.have.property("lastname").that.is.a("string");
         expect(addToCartResponse.body)
-          .to.have.property("address")
-          .that.is.a("string");
+          .to.have.property("address").that.is.a("string");
         expect(addToCartResponse.body)
-          .to.have.property("zipCode")
-          .that.is.a("string");
+          .to.have.property("zipCode").that.is.a("string");
         expect(addToCartResponse.body)
-          .to.have.property("city")
-          .that.is.a("string");
+          .to.have.property("city").that.is.a("string");
         expect(addToCartResponse.body)
-          .to.have.property("date")
-          .that.is.a("string");
+          .to.have.property("date").that.is.a("string");
         expect(addToCartResponse.body)
-          .to.have.property("validated")
-          .that.is.a("boolean");
+          .to.have.property("validated").that.is.a("boolean");
         expect(addToCartResponse.body)
-          .to.have.property("orderLines")
-          .that.is.an("array");
+          .to.have.property("orderLines").that.is.an("array");
 
         // Vérifier le schéma des éléments de orderLines
         const orderLine = addToCartResponse.body.orderLines[0];

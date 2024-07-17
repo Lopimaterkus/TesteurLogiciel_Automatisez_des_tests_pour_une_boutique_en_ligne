@@ -1,16 +1,8 @@
 describe("Retourner un produit spécifique après connexion", () => {
+  const apiUrl = `${Cypress.env("apiUrl")}`;
   it("Retourner la fiche d'un produit spécifique après connexion", () => {
-    // Effectuer d'abord la demande de connexion pour obtenir un jeton d'authentification
-    cy.request({
-      method: "POST",
-      url: "http://localhost:8081/login",
-      body: {
-        username: "test2@test.fr",
-        password: "testtest",
-      },
-    }).then((loginResponse) => {
-      expect(loginResponse.status).to.eq(200);
-      const authToken = loginResponse.body.token;
+    // Utiliser la commande login et attendre qu'elle soit résolue
+    cy.login('test2@test.fr', 'testtest').then(() => {
 
       //Récupérer un produit disponible
       cy.log("Détail d'un produit");
@@ -18,7 +10,7 @@ describe("Retourner un produit spécifique après connexion", () => {
         method: "GET",
         url: `http://localhost:8081/products/${5}`,
         headers: {
-          Authorization: `Bearer ${authToken}`,
+          Authorization: `Bearer ${Cypress.env("authToken")}`,
         },
         failOnStatusCode: false, // Ne pas échouer sur le code d'état de réponse
       }).then((productResponse) => {
@@ -39,7 +31,7 @@ describe("Retourner un produit spécifique après connexion", () => {
           method: "GET",
           url: `http://localhost:8081/products/${2}`,
           headers: {
-            Authorization: `Bearer ${authToken}`,
+            Authorization: `Bearer ${Cypress.env("authToken")}`,
           },
           failOnStatusCode: false, // Ne pas échouer sur le code d'état de réponse
         }).then((productResponse) => {
@@ -49,4 +41,4 @@ describe("Retourner un produit spécifique après connexion", () => {
       });
     });
   });
-});
+})

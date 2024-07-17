@@ -1,18 +1,7 @@
 describe("Test de récupération du panier après connexion", () => {
   const apiUrl = `${Cypress.env("apiUrl")}`;
   beforeEach(() => {
-    // Effectuer d'abord la demande de connexion pour obtenir un jeton d'authentification
-    cy.request({
-      method: "POST",
-      url: apiUrl + "/login",
-      body: {
-        username: "test2@test.fr",
-        password: "testtest",
-      },
-    }).then((loginResponse) => {
-      expect(loginResponse.status).to.eq(200);
-      Cypress.env("authToken", loginResponse.body.token); // Stocker le jeton d'authentification dans une variable d'environnement
-    });
+    cy.login('test2@test.fr', 'testtest');
   });
 
   it("Récupérer le panier avec une commande en cours", () => {

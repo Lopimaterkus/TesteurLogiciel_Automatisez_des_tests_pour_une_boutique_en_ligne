@@ -1,20 +1,9 @@
 describe("Ajouter un produit dans le panier", () => {
-  const apiUrl = `${Cypress.env("apiUrl")}`;
   let authToken;
 
   beforeEach(() => {
     // Effectuer d'abord la demande de connexion pour obtenir un jeton d'authentification
-    cy.request({
-      method: "POST",
-      url: apiUrl + "/login",
-      body: {
-        username: "test2@test.fr",
-        password: "testtest",
-      },
-    }).then((loginResponse) => {
-      expect(loginResponse.status).to.eq(200);
-      authToken = loginResponse.body.token; // Stocker le jeton d'authentification dans authToken
-    });
+    cy.login('test2@test.fr', 'testtest');
   });
   it("Ajouter un produit disponible au panier", () => {
     const productId = 5;
@@ -24,7 +13,7 @@ describe("Ajouter un produit dans le panier", () => {
       method: "GET",
       url: `http://localhost:8081/products/${productId}`,
       headers: {
-        Authorization: `Bearer ${authToken}`,
+        Authorization: `Bearer ${Cypress.env("authToken")}`,
       },
       failOnStatusCode: false,
     }).then((productResponse) => {
@@ -34,7 +23,7 @@ describe("Ajouter un produit dans le panier", () => {
         method: "POST",
         url: "http://localhost:8081/orders/add",
         headers: {
-          Authorization: `Bearer ${authToken}`,
+          Authorization: `Bearer ${Cypress.env("authToken")}`,
         },
         body: {
           product: productId,
@@ -89,7 +78,7 @@ describe("Ajouter un produit dans le panier", () => {
       method: "GET",
       url: `http://localhost:8081/products/${productId}`,
       headers: {
-        Authorization: `Bearer ${authToken}`,
+        Authorization: `Bearer ${Cypress.env("authToken")}`,
       },
       failOnStatusCode: false,
     }).then((productResponse) => {
@@ -98,7 +87,7 @@ describe("Ajouter un produit dans le panier", () => {
         method: "POST",
         url: "http://localhost:8081/orders/add",
         headers: {
-          Authorization: `Bearer ${authToken}`,
+          Authorization: `Bearer ${Cypress.env("authToken")}`,
         },
         body: {
           product: productId,

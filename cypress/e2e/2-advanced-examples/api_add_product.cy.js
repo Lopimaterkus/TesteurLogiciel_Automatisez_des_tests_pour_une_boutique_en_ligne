@@ -72,7 +72,7 @@ describe("Ajouter un produit dans le panier", () => {
   });
 
   it("Ajouter un produit non disponible dans le panier", () => {
-    const productId = 2;
+    const productId = 3;
     // Récupérer le produit non disponible et vérifier la réponse
     cy.request({
       method: "GET",

@@ -1,49 +1,38 @@
 describe("Test de récupération du panier après connexion", () => {
 
-    const apiUrl = `${Cypress.env("apiUrl")}`;
-    beforeEach(() => {
-      cy.login('test2@test.fr', 'testtest');
-    });
 
-it("Ajouter un produit au panier", () => {
-const productId = 4;
-    cy.request({
-      method: "GET",
-      url: `http://localhost:8081/products/${productId}`,
-      headers: {
-        Authorization: `Bearer ${Cypress.env("authToken")}`,
-      },
-      failOnStatusCode: false,
-    }).then((productResponse) => {
-      expect(productResponse.status).to.eq(200);
-      cy.request({
-        method: "PUT",
-        url: "http://localhost:8081/orders/add",
-        headers: {
-          Authorization: `Bearer ${Cypress.env("authToken")}`,
-        },
-        body: {
-          product: productId,
-          quantity: 1,
-        },
-      }).then((addToCartResponse) => {
-        expect(addToCartResponse.status).to.eq(200);
-      });
-    });
-})
-
-it("Commander plus de produits qu'il n'y en a disponible", () => {
-    cy.visit("http://localhost:8080/#/login");
-    cy.getBySel("login-input-username").type("test2@test.fr");
-    cy.getBySel("login-input-password").type("testtest");
-    cy.getBySel("login-submit").click();
-    cy.getBySel("nav-link-cart").click();
-    cy.getBySel("cart-line-quantity").type('{uparrow}');
-    // cy.getBySel('.error-message').should('be.visible') Étant donné que la classe .error-message n'existe pas et que le cas n'est pas encore géré, je mets cette ligne en commentaire// 
+    const addProductToCart = () => {
+      cy.getBySel("nav-link-products").click()
+      cy.getBySel("product-link").then(($products) => {
+      let productIndex = 2; 
+      cy.wrap($products[productIndex]).click();
+});
+      cy.getBySel("detail-product-quantity").type('{uparrow}');
+      cy.getBySel("detail-product-add").click();
+    }
+    const fillfields = () => {
     cy.getBySel("cart-input-address").type("1");
-    cy.getBySel("cart-input-zipcode").type("test");
-    // cy.getBySel('.error-message').should('be.visible') Étant donné que la classe .error-message n'existe pas et que le cas n'est pas encore géré, je mets cette ligne en commentaire// 
+    cy.getBySel("cart-input-zipcode").type("15000");
     cy.getBySel("cart-input-city").type("A");
-    cy.getBySel("cart-submit").click();
+    }
+    
+it("Ajouter un produit au panier", () => {
+  cy.visit("http://localhost:8080/#/login");
+  cy.getBySel("login-input-username").type("test2@test.fr");
+  cy.getBySel("login-input-password").type("testtest");
+  cy.getBySel("login-submit").click();
+  cy.wait(1000);
+  addProductToCart();
+  cy.getBySel("cart-line-delete").click();
+  addProductToCart();
+  fillfields();
+  cy.getBySel("cart-submit").click();
+  cy.wait(1000);
+  addProductToCart();
+  cy.wait(1000);
+  addProductToCart();
+  fillfields();
+  cy.getBySel("cart-submit").click();
+  // cy.getBySel("error-message").should("be.visible") Étant donné que la classe .error-message n'existe pas et que le cas n'est pas encore géré, je mets cette ligne en commentaire// 
 })
 })

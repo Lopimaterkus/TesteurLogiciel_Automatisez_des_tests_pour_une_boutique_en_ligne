@@ -4,7 +4,7 @@ describe("Test de récupération du panier après connexion", () => {
     const addProductToCart = () => {
       cy.getBySel("nav-link-products").click()
       cy.getBySel("product-link").then(($products) => {
-      let productIndex = 2; 
+      let productIndex = 5; 
       cy.wrap($products[productIndex]).click();
 });
       cy.getBySel("detail-product-quantity").type('{uparrow}');
